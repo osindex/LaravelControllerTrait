@@ -1,0 +1,49 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Http\Request;
+use DummyRootNamespaceHttp\Controllers\Controller;
+
+class DummyClass extends Controller
+{
+    function __construct(Model $model) {
+     $this->model = $model;
+     $this->resource = DummyNamespace . '\Http\Resources\Resource';
+     $this->collection = DummyNamespace . '\Http\Resources\Collection';
+     $this->functions = get_class_methods(self::class);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+    /**
+     * [storeRule description]
+     * @param  [type] $requestAll [description]
+     * @return [type]             [description]
+     */
+    public function storeRule($requestAll)
+    {
+        $rule = [
+            'name' => 'required|max:255'
+        ];
+        $messgae = [];
+        return $this->rules($requestAll, $rule, $messgae);
+    }
+}

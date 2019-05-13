@@ -1,0 +1,36 @@
+{
+    "name": "osi/laravel-controller-trait",
+    "description": "a trait about laravel",
+    "type": "library",
+    "license": "mit",
+    "authors": [
+        {
+            "name": "osi",
+            "email": "yaoiluo@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "laravel/framework": ">=5.5.0"
+    },
+    "authors": [
+        {
+            "name": "osi",
+            "email": "yaoiluo@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Osi\\LaravelControllerTrait\\": "src/"
+        }
+    },
+    "extra":
+    {
+        "laravel":
+        {
+            "providers": [
+                "Osi\\LaravelControllerTrait\\Providers\\LaravelControllerTraitServiceProvider"
+            ]
+        }
+    }
+}

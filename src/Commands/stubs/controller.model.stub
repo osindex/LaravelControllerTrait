@@ -1,0 +1,19 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullModelClass;
+use Illuminate\Http\Request;
+use DummyRootNamespaceHttp\Controllers\Controller;
+use Osi\LaravelControllerTrait\Traits\ControllerBaseTrait;
+class DummyClass extends Controller
+{
+    use ControllerBaseTrait;
+    function __construct(DummyFullModelClass $model) {
+     $this->model = $model;
+     $this->resource = '\Osi\LaravelControllerTrait\Resources\resource';
+     $this->collection = '\Osi\LaravelControllerTrait\Resources\Collection';
+     $this->functions = get_class_methods(self::class);
+     // $this->rulePostfix = 'Rule';
+    }
+}
