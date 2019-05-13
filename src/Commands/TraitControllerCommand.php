@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Osi\LaravelControllerTrait\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
+use Symfony\Component\Console\Input\InputOption;
 
 class TraitControllerCommand extends Command {
 	/**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Illuminate\Foundation\Console;
+namespace Osi\LaravelControllerTrait\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;

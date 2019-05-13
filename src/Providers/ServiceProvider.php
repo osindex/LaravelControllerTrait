@@ -6,8 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 class LaravelControllerTraitServiceProvider extends ServiceProvider {
 	protected $commands = [
-		'Osi\LaravelControllerTrait\Commands\TraitModelCommand',
 		'Osi\LaravelControllerTrait\Commands\TraitControllerCommand',
+		'Osi\LaravelControllerTrait\Commands\TraitModelCommand',
 	];
 	public function boot() {
 		// if (isNotLumen()) {
