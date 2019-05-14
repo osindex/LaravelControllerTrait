@@ -10,11 +10,11 @@ class LaravelControllerTraitServiceProvider extends ServiceProvider {
 		'Osi\LaravelControllerTrait\Commands\TraitModelCommand',
 	];
 	public function boot() {
-		// if (isNotLumen()) {
-		// 	$this->publishes([
-		// 		__DIR__ . '/../config/xx.php' => config_path('xx.php'),
-		// 	], 'config');
-
+		if (!preg_match('/lumen/i', app()->version())) {
+			$this->publishes([
+				__DIR__ . '/../Config/trait.php' => config_path('trait.php'),
+			], 'config');
+		}
 		// 	if (!class_exists('CreateLaravelControllerTraitTable')) {
 		// 		$timestamp = date('Y_m_d_His', time());
 
@@ -26,12 +26,6 @@ class LaravelControllerTraitServiceProvider extends ServiceProvider {
 	}
 
 	public function register() {
-		// if (isNotLumen()) {
-		// 	$this->mergeConfigFrom(
-		// 		__DIR__ . '/../config/xx.php',
-		// 		'xx'
-		// 	);
-		// }
 		$this->commands($this->commands);
 		// 在容器中注册
 		// $this->app->singleton('LaravelControllerTrait', function () {

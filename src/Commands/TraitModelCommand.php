@@ -19,7 +19,7 @@ class TraitModelCommand extends GeneratorCommand {
 	 *
 	 * @var string
 	 */
-	protected $description = 'Create a new Eloquent model class';
+	protected $description = 'Create a new Eloquent model class use FilterAndSorting';
 
 	/**
 	 * The type of class being generated.

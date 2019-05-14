@@ -2,31 +2,32 @@
 
 namespace Osi\LaravelControllerTrait\Commands;
 
-use Illuminate\Console\Command;
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 
-class TraitControllerCommand extends Command {
+class TraitControllerCommand extends GeneratorCommand {
 	/**
 	 * The name and signature of the console command.
 	 *
 	 * @var string
 	 */
-	protected $signature = 'trait:controller';
+	protected $name = 'trait:controller';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = '根据trait创建controller文件';
+	protected $description = 'Create a new controller class with trait';
 
 	/**
 	 * The type of class being generated.
 	 *
 	 * @var string
 	 */
-	protected $type = 'Controller';
+	protected $type = 'TraitController';
 
 	/**
 	 * Get the stub file for the generator.
@@ -90,7 +91,7 @@ class TraitControllerCommand extends Command {
 
 		if (!class_exists($modelClass)) {
 			if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
-				$this->call('trait:model', ['name' => $modelClass]);
+				$this->call('trait:model', ['name' => $modelClass, '-m' => true]);
 			}
 		}
 
@@ -114,7 +115,7 @@ class TraitControllerCommand extends Command {
 			throw new InvalidArgumentException('Model name contains invalid characters.');
 		}
 
-		$model = trim(str_replace('/', '\\', $model), '\\');
+		$model = trim(str_replace('/', '\\', config('trait.model.prefix') . $model), '\\');
 
 		if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
 			$model = $rootNamespace . $model;

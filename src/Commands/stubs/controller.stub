@@ -9,8 +9,8 @@ class DummyClass extends Controller
 {
     function __construct(Model $model) {
      $this->model = $model;
-     $this->resource = DummyNamespace . '\Http\Resources\Resource';
-     $this->collection = DummyNamespace . '\Http\Resources\Collection';
+     $this->resource = 'DummyNamespace\Http\Resources\Resource';
+     $this->collection = 'DummyNamespace\Http\Resources\Collection';
      $this->functions = get_class_methods(self::class);
     }
     /**

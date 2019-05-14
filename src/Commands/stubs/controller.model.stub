@@ -9,7 +9,7 @@ use Osi\LaravelControllerTrait\Traits\ControllerBaseTrait;
 class DummyClass extends Controller
 {
     use ControllerBaseTrait;
-    function __construct(DummyFullModelClass $model) {
+    function __construct(DummyModelClass $model) {
      $this->model = $model;
      $this->resource = '\Osi\LaravelControllerTrait\Resources\resource';
      $this->collection = '\Osi\LaravelControllerTrait\Resources\Collection';
