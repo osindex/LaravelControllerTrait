@@ -37,10 +37,10 @@ class TraitControllerCommand extends GeneratorCommand {
 	protected function getStub() {
 		$stub = null;
 
-		if ($this->option('model')) {
-			$stub = '/stubs/controller.model.stub';
-		} else {
+		if ($this->option('notModel')) {
 			$stub = '/stubs/controller.stub';
+		} else {
+			$stub = '/stubs/controller.model.stub';
 		}
 
 		return __DIR__ . $stub;
@@ -69,9 +69,7 @@ class TraitControllerCommand extends GeneratorCommand {
 
 		$replace = [];
 
-		if ($this->option('model')) {
-			$replace = $this->buildModelReplacements($replace);
-		}
+		$replace = $this->buildModelReplacements($replace);
 
 		$replace["use {$controllerNamespace}\Controller;\n"] = '';
 
@@ -87,7 +85,11 @@ class TraitControllerCommand extends GeneratorCommand {
 	 * @return array
 	 */
 	protected function buildModelReplacements(array $replace) {
-		$modelClass = $this->parseModel($this->option('model'));
+		$model = $this->option('model');
+		if (!$model) {
+			$model = str_replace('Controller', '', $this->getNameInput());
+		}
+		$modelClass = $this->parseModel($model);
 
 		if (!class_exists($modelClass)) {
 			if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
@@ -132,7 +134,7 @@ class TraitControllerCommand extends GeneratorCommand {
 	protected function getOptions() {
 		return [
 			['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
-			['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
+			['notModel', 'nm', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
 		];
 	}
 }
