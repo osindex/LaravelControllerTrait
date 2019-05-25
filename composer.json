@@ -22,7 +22,10 @@
     "autoload": {
         "psr-4": {
             "Osi\\LaravelControllerTrait\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "extra":
     {
