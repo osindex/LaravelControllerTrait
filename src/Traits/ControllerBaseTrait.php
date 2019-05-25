@@ -60,7 +60,7 @@ trait ControllerBaseTrait {
 				$this->$ruleName($request->all());
 			}
 		} catch (ValidationException $v) {
-			return $this->unprocesableEtity($v->errors())
+			return $this->unprocesableEtity($v->errors());
 			// 422
 		} catch (\Exception $e) {
 			return $this->badRequest('未知错误');
@@ -97,7 +97,7 @@ trait ControllerBaseTrait {
 				$this->$ruleName($request->all());
 			}
 		} catch (ValidationException $v) {
-			return $this->unprocesableEtity($v->errors())
+			return $this->unprocesableEtity($v->errors());
 			// 422
 		} catch (\Exception $e) {
 			return $this->badRequest('未知错误');
@@ -129,7 +129,6 @@ trait ControllerBaseTrait {
 			throw new ValidationException($validator);
 		}
 	}
-
 
 	public function option(Request $request) {
 		$select = $request->get('select') ?? '*';
