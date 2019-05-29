@@ -22,7 +22,7 @@ trait ControllerBaseTrait {
 	public function index(Request $request) {
 		// dd(tap($this->model->setFilterAndRelationsAndSort($request)->toSql()));
 		$data = tap($this->model->timestamps ? $this->model->latest() : $this->model)->setFilterAndRelationsAndSort($request)
-			->paginate($request->pageSize ?? 15);
+			->paginate((int) $request->pageSize ?? 15);
 		return new $this->collection($data);
 	}
 
