@@ -24,7 +24,7 @@ trait ControllerBaseTrait
     public function index(Request $request)
     {
         // dd(tap($this->model->setFilterAndRelationsAndSort($request)->toSql()));
-        $data = tap($this->model->timestamps ? $this->model->latest() : $this->model)->setFilterAndRelationsAndSort($request)
+        $data = ($this->model->timestamps ? $this->model->latest() : $this->model)->setFilterAndRelationsAndSort($request)
             ->paginate((int) $request->pageSize ?? 15);
         return new $this->collection($data);
     }
@@ -142,25 +142,13 @@ trait ControllerBaseTrait
 
     public function option(Request $request)
     {
-        $select = $request->get('select') ?? '*';
-        if ($select !== '*') {
-            $select = explode(',', $select);
-        }
         //请求中有all字段则移除作用域
-        if ($request->has('all')) {
-            $data = //tap($this->model->timestamps ? $this->model->latest() : $this->model)
-            tap(property_exists($this->model, 'isSoftDeletes') ? $this->model->withTrashed() : $this->model)
-                ->setFilterAndRelationsAndSort($request)
-                ->select($select)
-                ->withoutGlobalScopes() //字典移除查询作用域
-                ->get();
-        } else {
-            $data = //tap($this->model->timestamps ? $this->model->latest() : $this->model)
-            tap(property_exists($this->model, 'isSoftDeletes') ? $this->model->withTrashed() : $this->model)
-                ->setFilterAndRelationsAndSort($request)
-                ->select($select)
-                ->get();
-        }
+        $data = (property_exists($this->model, 'isSoftDeletes') ? $this->model->withTrashed() : $this->model)
+            ->setFilterAndRelationsAndSort($request)
+            ->when($request->has('all'), function ($q) {
+                return $q->withoutGlobalScopes(); //字典移除查询作用域
+            })
+            ->get();
         return $this->dataSuccess($data);
     }
 
