@@ -113,7 +113,7 @@ trait ControllerBaseTrait
         }
 
         $model = $this->model::query()->findOrFail($id);
-        $attributes = request_intersect(array_keys($model->getOriginal()));
+        $attributes = requestIntersect(array_keys($model->getOriginal()));
         $model->update($attributes);
 
         return $this->accepted();
