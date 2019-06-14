@@ -83,8 +83,10 @@ trait FilterAndSorting
         $filter = $this->getFilter($params, $request);
         // dd($filter);
         if ($filter) {
+            $scopes = $this->getScopes();
             foreach ($filter as $key => $value) {
                 $keys_array = explode('.', $key);
+                // dd($keys_array);
                 $relation = null;
                 $table_name = null;
                 if (count($keys_array) == 2 && in_array($keys_array[0], $this->extraFields())) {
@@ -105,6 +107,8 @@ trait FilterAndSorting
                             $this->addFilterCondition($qu, $field_name, $value, $table_name);
                         });
                     }
+                } else if (in_array($keys_array[0], $scopes)) {
+                    $this->addScope($query, $keys_array[0], $value);
                 } else {
                     $this->addFilterCondition($query, $field_name, $value);
                 }
@@ -333,5 +337,13 @@ trait FilterAndSorting
             $query->select($select);
         }
         return $query;
+    }
+    public function getScopes()
+    {
+        return $this->filterScopes ?? [];
+    }
+    public function addScope(&$query, string $scope, $value)
+    {
+        $query->{$scope}($value);
     }
 }
