@@ -11,7 +11,7 @@ class DummyClass extends Controller
     use ControllerBaseTrait;
     function __construct(DummyModelClass $model) {
      $this->model = $model;
-     $this->resource = '\Osi\LaravelControllerTrait\Resources\resource';
+     $this->resource = '\Osi\LaravelControllerTrait\Resources\Resource';
      $this->collection = '\Osi\LaravelControllerTrait\Resources\Collection';
      $this->functions = get_class_methods(self::class);
      // $this->rulePostfix = 'Rule';
