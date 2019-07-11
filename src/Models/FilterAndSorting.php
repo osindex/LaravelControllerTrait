@@ -128,7 +128,7 @@ trait FilterAndSorting
      */
     public function addFilterCondition(&$query, $key, $value, $table_name = null)
     {
-        $allow_operations = ['=', '>', '<', '>=', '<=', '<>', 'not in', 'in', 'like'];
+        $allow_operations = ['jsoncontains', 'jsonlength', '=', '>', '<', '>=', '<=', '<>', 'notin', 'in', 'like'];
         if ($table_name) {
             $key = $table_name . '.' . $key;
         }
@@ -142,7 +142,15 @@ trait FilterAndSorting
             if (isset($value['operation']) && in_array(strtolower($value['operation']), $allow_operations) && isset($value['value'])) {
                 if (strtolower($value['operation']) == 'in' && is_array($value['value'])) {
                     $query->whereIn($key, $value['value']);
-                } elseif (strtolower($value['operation']) == 'not in' && is_array($value['value'])) {
+                } elseif (strtolower($value['operation']) == 'jsoncontains') {
+                    $query->whereJsonContains($key, $value['value']);
+                } elseif (strtolower($value['operation']) == 'jsonlength') {
+                    if (isset($value['type'])) {
+                        $query->whereJsonLength($key, $value['type'], $value['value']);
+                    } else {
+                        $query->whereJsonLength($key, $value['value']);
+                    }
+                } elseif (strtolower(str_replace(' ', '', $value['operation'])) == 'notin' && is_array($value['value'])) {
                     $query->whereNotIn($key, $value['value']);
                 } elseif (strtolower($value['operation']) == 'like') {
                     $query->where($key, 'like', "%{$value['value']}%");
