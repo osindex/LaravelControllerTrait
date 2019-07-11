@@ -33,7 +33,7 @@ response: { "id": 1, "message": "some message", "user_id": 1, ... "user": { "id"
 # 关联搜索子集，获取特定字段
 /message?expand=archives,user.recordable:id/status
 
-# 【1.9】新增scope搜索
+# 【1.8】新增scope搜索
 //User Model
 <?php
 
@@ -48,7 +48,7 @@ public function scopeQueryLike($query, $param)
 }
 /user?filter={"QueryLike":2333}
 
-# 【1.10】新增JSON搜索(jsoncontains,jsonlength) 
+# 【1.9】新增JSON搜索(jsoncontains,jsonlength) 
 ##注：目前仅有jsonlength 支持type属性
 /message?filter={"json->paramA":"233"}
 /message?filter={"json->array":{"operation":"jsonlength","type":">","value":5}}
