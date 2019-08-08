@@ -65,12 +65,15 @@ if (!function_exists('make_tree')) {
             unset($updateColumn[0]);
             $whereIn = "";
 
-            $q = "UPDATE `" . $tableName . "` SET `";
+            $q = "UPDATE `" . $tableName . "` SET ";
             foreach ($updateColumn as $uColumn) {
-                $q .= $uColumn . "` = CASE ";
-
+                $q .= '`' . $uColumn . "` = CASE ";
                 foreach ($multipleData as $data) {
-                    $q .= "WHEN " . $referenceColumn . " = " . $data[$referenceColumn] . " THEN '" . $data[$uColumn] . "' ";
+                    $field = $data[$uColumn];
+                    if (is_array($field)) {
+                        $field = json_encode($field);
+                    }
+                    $q .= "WHEN " . $referenceColumn . " = " . $data[$referenceColumn] . " THEN '" . $field . "' ";
                 }
                 $q .= "ELSE `" . $uColumn . "` END, ";
             }
