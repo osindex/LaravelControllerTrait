@@ -5,9 +5,39 @@
 composer require osi/laravel-controller-trait
 ```
 ## useage
+###artisan
 ```
 php artisan trait:controller
 php artisan trait:model
+
+```
+###controller&&route
+```
+
+use Osi\LaravelControllerTrait\Traits\ControllerBaseTrait; // trait
+use App\Admin; //model file
+class AdminsController extends Controller
+{
+    use ControllerBaseTrait;
+
+    public function __construct(Admin $model)
+    {
+        $this->model = $model;
+        $this->resource = '\Osi\LaravelControllerTrait\Resources\Resource';
+        $this->collection = '\Osi\LaravelControllerTrait\Resources\Collection';
+        $this->functions = get_class_methods(self::class);
+    }
+}
+
+Route::resources(['admins' => 'AdminsController']);
+#以上完成，即提供了常规的增删改查方法
+
+#【1.10】新增批量更新
+post:api/admins/batch
+request()->all(): [
+	['id'=>1,'field'=>'xxx','field2'=>xxx],
+	['id'=>2,'field'=>'x2x','field2'=>x2x]
+]
 
 ```
 ## filter

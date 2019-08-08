@@ -23,6 +23,14 @@ trait FilterAndSorting
     {
         DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
     }
+    // /**
+    //  * 获得当前表名
+    //  * @return [type] [description]
+    //  */
+    // public static function getTableName()
+    // {
+    //     return (new static )->getTable();
+    // }
     /**
      * 过滤设备以及排序嵌套模型的连接
      *

@@ -152,6 +152,16 @@ trait ControllerBaseTrait
         return $this->dataSuccess($data);
     }
 
+    public function batch(Request $request)
+    {
+        try {
+            $res = updateBatch($request->all(), $this->model->getTable());
+        } catch (\Exception $e) {
+            return $this->badRequest('未知错误');
+        }
+        return $res ? $this->accepted() : $this->badRequest('更新失败');
+    }
+
     public function dataSuccess($data)
     {
         return $this->success([JsonResource::$wrap => $data]);
