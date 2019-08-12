@@ -71,7 +71,8 @@ if (!function_exists('make_tree')) {
                 foreach ($multipleData as $data) {
                     $field = $data[$uColumn];
                     if (is_array($field)) {
-                        $field = json_encode($field, JSON_UNESCAPED_UNICODE);
+                        // $field = json_encode($field, JSON_UNESCAPED_UNICODE);
+                        $field = addslashes(json_encode($field));
                     }
                     $q .= "WHEN " . $referenceColumn . " = " . $data[$referenceColumn] . " THEN '" . $field . "' ";
                 }
