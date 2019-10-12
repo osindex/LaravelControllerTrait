@@ -39,6 +39,20 @@ request()->all(): [
 	['id'=>2,'field'=>'x2x','field2'=>x2x]
 ]
 
+#【1.11】剥离基础返回类
+
+use Osi\LaravelControllerTrait\Traits\ResponseBaseTrait; // trait 附带以下方法
+
+dataSuccess
+created
+accepted
+noContent
+badRequest
+unauthorized
+forbidden
+unprocesableEtity
+success
+
 ```
 ## filter
 ```

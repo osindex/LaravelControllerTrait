@@ -11,7 +11,8 @@
     ],
     "require": {
         "php": ">=7.1",
-        "laravel/framework": ">=5.5.0"
+        "laravel/framework": ">=5.5.0",
+        "doctrine/dbal": "^2.9"
     },
     "authors": [
         {
