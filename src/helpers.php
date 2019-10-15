@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('request_intersect')) {
+if (!function_exists('requestIntersect')) {
     /**
      * request intersect
      *
@@ -14,7 +14,7 @@ if (!function_exists('request_intersect')) {
     }
 }
 
-if (!function_exists('make_tree')) {
+if (!function_exists('makeTree')) {
     /**
      * @param array $list
      * @param int $parentId
@@ -43,7 +43,7 @@ if (!function_exists('make_tree')) {
         return $tree;
     }
 }
-if (!function_exists('make_tree')) {
+if (!function_exists('updateBatch')) {
 
     /*
      * ----------------------------------
