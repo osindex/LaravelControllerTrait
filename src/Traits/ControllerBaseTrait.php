@@ -12,9 +12,9 @@ trait ControllerBaseTrait
 {
     use ResponseBaseTrait;
     protected $model;
-    protected $resource;
-    protected $collection;
-    protected $functions;
+    protected $resource = '\Osi\LaravelControllerTrait\Resources\Resource';
+    protected $collection = '\Osi\LaravelControllerTrait\Resources\Collection';
+    protected $functions = []; // get_class_methods(self::class)
     protected $rulePostfix = 'Rule';
 
     /**
@@ -60,11 +60,12 @@ trait ControllerBaseTrait
     public function store(Request $request)
     {
         try {
+            $data = $request->all();
             $ruleName = __FUNCTION__ . $this->rulePostfix;
             // 可以用异常捕获 也可以用返回值判断
             if (in_array($ruleName, $this->functions)) {
                 // dd($ruleName);
-                $this->$ruleName($request->all());
+                $data = $this->$ruleName($data);
             }
         } catch (ValidationException $v) {
             return $this->unprocesableEtity($v->errors());
@@ -73,7 +74,7 @@ trait ControllerBaseTrait
             return $this->badRequest('未知错误');
             // 400
         }
-        $this->model::create($request->all());
+        $this->model::create($data);
         return $this->created();
     }
 
