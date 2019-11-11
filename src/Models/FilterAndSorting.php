@@ -346,11 +346,16 @@ trait FilterAndSorting
     public function setSelect($query, $request = null)
     {
         if ($request && $request->has('select')) {
-            $select = $request->get('select') ?? '*';
-            if ($select !== '*') {
-                $select = explode(',', $select);
+            $raw = $request->get('raw', false);
+            $select = $request->get('select', '*');
+            if ($raw) {
+                $query->selectRAW($select);
+            } else {
+                if ($select !== '*') {
+                    $select = explode(',', $select);
+                }
+                $query->select($select);
             }
-            $query->select($select);
         }
         return $query;
     }
