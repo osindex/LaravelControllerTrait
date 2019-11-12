@@ -98,6 +98,11 @@ public function scopeQueryLike($query, $param)
 /message?filter={"json->array":{"operation":"jsonlength","type":">","value":5}}
 /message?filter={"json->array":{"operation":"jsoncontains","value":5}}
 
+# 【1.11】 filterExpand 用法
+## 一般我们使用expand对应with方法 如 `model->with('app')` === `?expand=app`
+因此 可以使用 filterExpand 完成 `model->with(['app'=>function($q) use($id){$q->where('id',$id)}])` 的类似方法
+/message?expand=app&filterExpand={'app.created_at': { 'operation': '>=', 'value': 'now()' },'app.id': 1}
+
 ```
 ## func
 ```
