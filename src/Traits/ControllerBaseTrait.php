@@ -71,6 +71,9 @@ trait ControllerBaseTrait
             return $this->unprocesableEtity($v->errors());
             // 422
         } catch (\Exception $e) {
+            if (config('app.debug')) {
+                return $this->badRequest($e->getMessage());
+            }
             return $this->badRequest('未知错误');
             // 400
         }
@@ -110,6 +113,9 @@ trait ControllerBaseTrait
             return $this->unprocesableEtity($v->errors());
             // 422
         } catch (\Exception $e) {
+            if (config('app.debug')) {
+                return $this->badRequest($e->getMessage());
+            }
             return $this->badRequest('未知错误');
             // 400
         }

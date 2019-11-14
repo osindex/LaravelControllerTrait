@@ -2,6 +2,9 @@
 
 namespace Osi\LaravelControllerTrait\Providers;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelControllerTraitServiceProvider extends ServiceProvider
@@ -20,6 +23,22 @@ class LaravelControllerTraitServiceProvider extends ServiceProvider
         }
         // $this->app->alias(\Osi\LaravelControllerTrait\Traits\ControllerBaseTrait::class, 'ControllerBaseTrait');
         // $this->app->alias(\Osi\LaravelControllerTrait\Models\FilterAndSorting::class, 'FilterAndSorting');
+        if (!Collection::hasMacro('paginate')) {
+            Collection::macro('paginate',
+                function ($perPage = 15, $page = null, $options = []) {
+                    $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+                    return (new LengthAwarePaginator(
+                        $this->forPage($page, $perPage), $this->count(), $perPage, $page, $options))
+                        ->withPath('');
+                });
+        }
+        if (!Collection::hasMacro('setFilterAndRelationsAndSort')) {
+            // dd(scopeSetFilterAndRelationsAndSort($this, $query, $params));
+            Collection::macro('setFilterAndRelationsAndSort',
+                function ($query, $params = []) {
+                    return scopeSetFilterAndRelationsAndSort($this, $query, $params);
+                });
+        }
     }
 
     public function register()
