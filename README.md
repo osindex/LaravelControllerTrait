@@ -62,7 +62,7 @@ success
 /message?filter={"updated_at":{"isNull":true}}
 /message?filter={"answer":{"operation":"like","value":"Partial search string"}}
 /message?filter={"answer":"Full search string"}
-/message?filter={"user.name":"asd"} # 关联搜索
+/message?filter={"user.name":"asd"} # 关联搜索 whereHas
 /message?filter={"id":1}
 
 # 暂时只支持单字段排序
@@ -103,6 +103,10 @@ public function scopeQueryLike($query, $param)
 因此 可以使用 filterExpand 完成 `model->with(['app'=>function($q) use($id){$q->where('id',$id)}])` 的类似方法
 /message?expand=app&filterExpand={'app.created_at': { 'operation': '>=', 'value': 'now()' },'app.id': 1}
 
+# 【2.0】 collection 集合增加筛选及分页方法
+#collect()->setFilterAndRelationsAndSort($request)->paginate((int) $request->pageSize ?? 15)
+集合的查询相对数据库较为简单 仅包括集合支持的相关方法 具体查阅以下函数
+setFilter
 ```
 ## func
 ```
