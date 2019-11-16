@@ -25,7 +25,7 @@ trait ControllerBaseTrait
     public function index(Request $request)
     {
         // dd(tap($this->model->setFilterAndRelationsAndSort($request)->toSql()));
-        $data = ($this->model->timestamps ? $this->model->latest() : $this->model)->setFilterAndRelationsAndSort($request)
+        $data = $this->model->setFilterAndRelationsAndSort($request)
             ->paginate((int) $request->pageSize ?? 15);
         return new $this->collection($data);
     }
