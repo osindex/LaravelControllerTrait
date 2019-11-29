@@ -167,6 +167,6 @@ trait ControllerBaseTrait
         } catch (\Exception $e) {
             return $this->badRequest('未知错误');
         }
-        return $res ? $this->accepted() : $this->badRequest('更新失败');
+        return $res === false ? $this->badRequest('更新失败') : $this->accepted();
     }
 }
