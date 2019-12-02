@@ -161,10 +161,15 @@ trait FilterAndSorting
                 } elseif (strtolower(str_replace(' ', '', $value['operation'])) == 'notin' && is_array($value['value'])) {
                     $query->whereNotIn($key, $value['value']);
                 } elseif (strtolower($value['operation']) == 'like') {
-                    $query->where($key, 'like', "%{$value['value']}%");
+                    if (strpos($value['value']) === false) {
+                        $query->where($key, 'like', "%{$value['value']}%");
+                    } else {
+                        $query->where($key, 'like', $value['value']);
+                    }
                 } else {
                     $value['value'] = preg_match($pattern, $value['value']) ? (new \DateTime($value['value']))->format("Y-m-d") : $value['value'];
-                    $query->where($key, $value['operation'], \DB::raw($value['value']));
+                    // db:raw 注入隐患
+                    $query->where($key, $value['operation'], $value['value']);
                 }
             } elseif (isset($value['from']) || isset($value['to'])) {
                 if (isset($value['from']) && $value['from']) {
