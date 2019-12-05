@@ -161,7 +161,7 @@ trait FilterAndSorting
                 } elseif (strtolower(str_replace(' ', '', $value['operation'])) == 'notin' && is_array($value['value'])) {
                     $query->whereNotIn($key, $value['value']);
                 } elseif (strtolower($value['operation']) == 'like') {
-                    if (strpos($value['value']) === false) {
+                    if (strpos($value['value'], '%') === false) {
                         $query->where($key, 'like', "%{$value['value']}%");
                     } else {
                         $query->where($key, 'like', $value['value']);
