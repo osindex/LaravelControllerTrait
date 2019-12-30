@@ -26,7 +26,7 @@ trait ControllerBaseTrait
     {
         // dd(tap($this->model->setFilterAndRelationsAndSort($request)->toSql()));
         $data = ($this->model->timestamps ? $this->model->latest() : $this->model)->setFilterAndRelationsAndSort($request)
-            ->paginate((int) $request->pageSize ?? 15);
+            ->paginate((int)$request->pageSize ?? 15);
         return new $this->collection($data);
     }
 
@@ -43,7 +43,7 @@ trait ControllerBaseTrait
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
@@ -54,7 +54,7 @@ trait ControllerBaseTrait
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -63,7 +63,7 @@ trait ControllerBaseTrait
             $data = $request->all();
             $ruleName = __FUNCTION__ . $this->rulePostfix;
             // 可以用异常捕获 也可以用返回值判断
-            if (in_array($ruleName, $this->functions)) {
+            if (method_exists($this, $ruleName)) {
                 // dd($ruleName);
                 $data = $this->$ruleName($data);
             }
@@ -84,21 +84,21 @@ trait ControllerBaseTrait
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
     {
         return new $this->resource($this->model::query()
-                ->setFilterAndRelationsAndSort($request)
-                ->findOrFail($id));
+            ->setFilterAndRelationsAndSort($request)
+            ->findOrFail($id));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -106,7 +106,7 @@ trait ControllerBaseTrait
         try {
             $ruleName = __FUNCTION__ . $this->rulePostfix;
             // 可以用异常捕获 也可以用返回值判断
-            if (in_array($ruleName, $this->functions)) {
+            if (method_exists($this, $ruleName)) {
                 $this->$ruleName($request->all());
             }
         } catch (ValidationException $v) {
@@ -130,7 +130,7 @@ trait ControllerBaseTrait
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
