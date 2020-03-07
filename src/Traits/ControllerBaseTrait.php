@@ -26,7 +26,7 @@ trait ControllerBaseTrait
     {
         // dd(tap($this->model->setFilterAndRelationsAndSort($request)->toSql()));
         $data = ($this->model->timestamps ? $this->model->latest() : $this->model)->setFilterAndRelationsAndSort($request)
-            ->paginate((int)$request->pageSize ?? 15);
+            ->paginate((int) $request->pageSize ?? 15);
         return new $this->collection($data);
     }
 
@@ -90,8 +90,8 @@ trait ControllerBaseTrait
     public function show(Request $request, $id)
     {
         return new $this->resource($this->model::query()
-            ->setFilterAndRelationsAndSort($request)
-            ->findOrFail($id));
+                ->setFilterAndRelationsAndSort($request)
+                ->findOrFail($id));
     }
 
     /**
@@ -163,7 +163,11 @@ trait ControllerBaseTrait
     public function batch(Request $request)
     {
         try {
-            $res = updateBatch($request->all(), $this->model->getTable());
+            if ($request->has('data')) {
+                $res = updateBatch($request->data, $this->model->getTable());
+            } else {
+                $res = updateBatch($request->all(), $this->model->getTable());
+            }
         } catch (\Exception $e) {
             return $this->badRequest('未知错误');
         }
