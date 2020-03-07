@@ -108,6 +108,23 @@ public function scopeQueryLike($query, $param)
 集合的查询相对数据库较为简单 仅包括集合支持的相关方法 具体查阅以下函数
 setFilter
 ```
+# 【2.1】batch批量更新修改
+```
+#原
+post:api/model/batch
+request()->all(): [
+    ['id'=>1,'field'=>'xxx','field2'=>xxx],
+    ['id'=>2,'field'=>'x2x','field2'=>x2x]
+]
+#新增兼容 data对象包裹
+request()->all(): [
+    'data'=>
+    [
+        ['id'=>1,'field'=>'xxx','field2'=>xxx],
+        ['id'=>2,'field'=>'x2x','field2'=>x2x]
+    ]
+]
+```
 ## func
 ```
 Don not code normal controller func.
