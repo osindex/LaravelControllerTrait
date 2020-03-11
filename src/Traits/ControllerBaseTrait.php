@@ -77,8 +77,8 @@ trait ControllerBaseTrait
             return $this->badRequest('未知错误');
             // 400
         }
-        $this->model::create($data);
-        return $this->created();
+        $res = $this->model::create($data);
+        return $this->created($res);
     }
 
     /**
@@ -122,9 +122,9 @@ trait ControllerBaseTrait
 
         $model = $this->model::query()->findOrFail($id);
         $attributes = requestIntersect(array_keys($model->getOriginal()));
-        $model->update($attributes);
+        $res = $model->update($attributes);
 
-        return $this->accepted();
+        return $this->accepted($res);
     }
 
     /**
