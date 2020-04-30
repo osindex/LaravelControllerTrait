@@ -124,7 +124,7 @@ trait ControllerBaseTrait
         $attributes = requestIntersect(array_keys($model->getOriginal()));
         $res = $model->update($attributes);
 
-        return $this->accepted($res);
+        return $this->accepted($model);
     }
 
     /**
