@@ -78,7 +78,13 @@ trait ControllerBaseTrait
             // 400
         }
         $res = $this->model::create($data);
+        $this->afterCreate($res);
         return $this->created($res);
+    }
+    
+    public function afterCreate($data)
+    {
+        # code...
     }
 
     /**
@@ -123,8 +129,13 @@ trait ControllerBaseTrait
         $model = $this->model::query()->findOrFail($id);
         $attributes = requestIntersect(array_keys($model->getOriginal()));
         $res = $model->update($attributes);
-
+        $this->afterUpdate($model);
         return $this->accepted($model);
+    }
+
+    public function afterUpdate($data)
+    {
+        
     }
 
     /**
