@@ -29,9 +29,9 @@ trait ResponseBaseTrait
      * @author osindex<yaoiluo@gmail.com>
      * @return Response
      */
-    protected function accepted()
+    protected function accepted($content = '')
     {
-        return new Response('', Response::HTTP_ACCEPTED);
+        return new Response($content, Response::HTTP_ACCEPTED);
     }
 
     /**
