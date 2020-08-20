@@ -149,11 +149,12 @@ trait FilterAndSorting
             $pattern = "/^(\d{2}).(\d{2}).(\d{4})$/";
             if (isset($value['operation']) && in_array(strtolower($value['operation']), $allow_operations) && isset($value['value'])) {
                 if (strtolower($value['operation']) == 'in' && is_array($value['value'])) {
-                    $query->whereIn($key, $value['value']);
                     if (in_array(null,$value['value'])) {
                         $query->where(function ($q) use ($key,$value) {
                             return $q->whereIn($key, $value['value'])->orWhereNull($key);
                         });
+                    } else {
+                        $query->whereIn($key, $value['value']);
                     }
                 } elseif (strtolower($value['operation']) == 'jsoncontains') {
                     $query->whereJsonContains($key, $value['value']);
