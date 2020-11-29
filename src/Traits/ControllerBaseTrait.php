@@ -25,7 +25,7 @@ trait ControllerBaseTrait
     public function index(Request $request)
     {
         // dd(tap($this->model->setFilterAndRelationsAndSort($request)->toSql()));
-        $data = ($this->model->timestamps ? $this->model->latest() : $this->model)->setFilterAndRelationsAndSort($request)
+        $data = $this->model->setFilterAndRelationsAndSort($request)
             ->paginate((int) $request->pageSize ?? 15);
         return new $this->collection($data);
     }
@@ -77,8 +77,14 @@ trait ControllerBaseTrait
             return $this->badRequest('未知错误');
             // 400
         }
-        $this->model::create($data);
-        return $this->created();
+        $res = $this->model::create($data);
+        $this->afterCreate($res);
+        return $this->created($res);
+    }
+    
+    public function afterCreate($data)
+    {
+        # code...
     }
 
     /**
@@ -122,9 +128,14 @@ trait ControllerBaseTrait
 
         $model = $this->model::query()->findOrFail($id);
         $attributes = requestIntersect(array_keys($model->getOriginal()));
-        $model->update($attributes);
+        $res = $model->update($attributes);
+        $this->afterUpdate($model);
+        return $this->accepted($model);
+    }
 
-        return $this->accepted();
+    public function afterUpdate($data)
+    {
+        
     }
 
     /**
