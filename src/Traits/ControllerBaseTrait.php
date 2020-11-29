@@ -25,7 +25,7 @@ trait ControllerBaseTrait
     public function index(Request $request)
     {
         // dd(tap($this->model->setFilterAndRelationsAndSort($request)->toSql()));
-        $data = $this->model->setFilterAndRelationsAndSort($request)
+        $data = ($this->model->timestamps && $this->model->latestIndex ? $this->model->latest() : $this->model)->setFilterAndRelationsAndSort($request)
             ->paginate((int) $request->pageSize ?? 15);
         return new $this->collection($data);
     }
@@ -65,7 +65,7 @@ trait ControllerBaseTrait
             // 可以用异常捕获 也可以用返回值判断
             if (method_exists($this, $ruleName)) {
                 // dd($ruleName);
-                $data = $this->$ruleName($data);
+                $data = $this->$ruleName($request);
             }
         } catch (ValidationException $v) {
             return $this->unprocesableEtity($v->errors());
@@ -78,12 +78,13 @@ trait ControllerBaseTrait
             // 400
         }
         $res = $this->model::create($data);
-        $this->afterCreate($res);
+        $this->afterCreate($res, $request);
         return $this->created($res);
     }
 
-    public function afterCreate($data)
+    public function afterCreate($data, $request)
     {
+        // 也可以用model事件
         # code...
     }
 
@@ -113,7 +114,7 @@ trait ControllerBaseTrait
             $ruleName = __FUNCTION__ . $this->rulePostfix;
             // 可以用异常捕获 也可以用返回值判断
             if (method_exists($this, $ruleName)) {
-                $this->$ruleName($request->all());
+                $this->$ruleName($request);
             }
         } catch (ValidationException $v) {
             return $this->unprocesableEtity($v->errors());
@@ -129,11 +130,11 @@ trait ControllerBaseTrait
         $model = $this->model::query()->findOrFail($id);
         $attributes = requestIntersect(array_keys($model->getOriginal()));
         $res = $model->update($attributes);
-        $this->afterUpdate($model);
+        $this->afterUpdate($model, $request);
         return $this->accepted($model);
     }
 
-    public function afterUpdate($data)
+    public function afterUpdate($data, $request)
     {
 
     }
@@ -151,9 +152,9 @@ trait ControllerBaseTrait
         return $this->noContent();
     }
 
-    public function rules($requestAll, $rules, $messages = [])
+    public function rules($request, $rules, $messages = [])
     {
-        $validator = Validator::make($requestAll, $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
