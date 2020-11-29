@@ -81,7 +81,7 @@ trait ControllerBaseTrait
         $this->afterCreate($res);
         return $this->created($res);
     }
-    
+
     public function afterCreate($data)
     {
         # code...
@@ -135,7 +135,7 @@ trait ControllerBaseTrait
 
     public function afterUpdate($data)
     {
-        
+
     }
 
     /**
@@ -168,6 +168,11 @@ trait ControllerBaseTrait
                 return $q->withoutGlobalScopes(); //字典移除查询作用域
             })
             ->get();
+        if (method_exists($this->model, 'defaultOptions')) {
+            foreach ($this->model->defaultOptions() as $option) {
+                $data->prepend($option);
+            }
+        }
         return $this->dataSuccess($data);
     }
 
