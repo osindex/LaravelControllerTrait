@@ -169,7 +169,7 @@ trait ControllerBaseTrait
                 return $q->withoutGlobalScopes(); //字典移除查询作用域
             })
             ->get();
-        if (method_exists($this->model, 'defaultOptions')) {
+        if ($request->has('prepend') && method_exists($this->model, 'defaultOptions')) {
             foreach ($this->model->defaultOptions() as $option) {
                 $data->prepend($option);
             }
