@@ -57,6 +57,7 @@ success
 ## filter
 ```
 /message?filter={"created_at":{"from":"2016-02-20","to":"2016-02-24 23:59:59"}, "id":{"operation":"not in", "value":[2,3,4]}}
+/message?filter={"user_id":{"operation":"in", "value":[null,2,3,4]}}
 /message?filter={"id":{"from":2,"to":5}}
 /message?filter={"id":{"to":5}} or /message?filter={"id":{"operation":"<=","value":5}}
 /message?filter={"updated_at":{"isNull":true}}
@@ -124,6 +125,12 @@ request()->all(): [
         ['id'=>2,'field'=>'x2x','field2'=>x2x]
     ]
 ]
+```
+
+```
+添加"operation":"in"  对null的支持  
+"col":{"operation":"in", "value":[null,2,3,4]}
+
 ```
 ## func
 ```
