@@ -114,7 +114,7 @@ trait ControllerBaseTrait
             $ruleName = __FUNCTION__ . $this->rulePostfix;
             // 可以用异常捕获 也可以用返回值判断
             if (method_exists($this, $ruleName)) {
-                $this->$ruleName($request);
+                $data = $this->$ruleName($request);
             }
         } catch (ValidationException $v) {
             return $this->unprocesableEtity($v->errors());
@@ -128,8 +128,12 @@ trait ControllerBaseTrait
         }
 
         $model = $this->model::query()->findOrFail($id);
-        $attributes = requestIntersect(array_keys($model->getOriginal()));
-        $res = $model->update($attributes);
+        if (isset($data)) {
+            $res = $model->update($data);
+        } else {
+            $attributes = requestIntersect(array_keys($model->getOriginal()));
+            $res = $model->update($attributes);
+        }
         $this->afterUpdate($model, $request);
         return $this->accepted($model);
     }
