@@ -11,6 +11,23 @@ php artisan trait:controller
 php artisan trait:model
 
 ```
+
+### 近期更新说明
+
+```
+#【2021-06-11】新增对withCount的支持
+
+?expandCount: ["user",{"role.code":"admin"}]
+
+需要在model类加入以下支持
+public function extraFields()
+{
+    return ['user', 'role'];
+}
+
+```
+
+
 ###controller&&route
 ```
 
@@ -54,6 +71,7 @@ unprocesableEtity
 success
 
 ```
+
 ## filter
 ```
 /message?filter={"created_at":{"from":"2016-02-20","to":"2016-02-24 23:59:59"}, "id":{"operation":"not in", "value":[2,3,4]}}
