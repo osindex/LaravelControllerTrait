@@ -45,11 +45,45 @@ trait FilterAndSorting
         $query = $this->setFilter($query, $params, $request);
         $this->setExpands($query, $request);
         $this->setFilterExpand($query, $params, $request);
+        $this->setExpandCount($query, $params, $request);
         $query = $this->setSort($query, $request);
         $query = $this->setLimit($query, $request);
         $query = $this->setOffset($query, $request);
         $query = $this->setSelect($query, $request);
         return $query;
+    }
+    /**
+     * 在嵌套模型筛选数据
+     *
+     * @param $query
+     * @param $params
+     * @param null $request
+     * @since 1.0.3
+     */
+    public function setExpandCount($query, $params, $request = null)
+    {
+        $filter = $this->getFilter($params, $request, 'expandCount');
+        if ($filter) {
+            foreach ($filter as $countV) {
+                // dd($filter, $value);
+                if (is_array($countV)) {
+                    foreach ($countV as $key => $value) {
+                        $keys_array = explode('.', $key);
+                        $relation = null;
+                        if (count($keys_array) == 2 && in_array($keys_array[0], $this->extraFields())) {
+                            // dd($keys_array, $value);
+                            $relation = $keys_array[0];
+                            $field_name = $keys_array[1];
+                            $query->withCount([$relation => function ($q) use ($field_name, $value) {
+                                $this->addFilterCondition($q, $field_name, $value);
+                            }]);
+                        }
+                    }
+                } elseif ($countV) {
+                    $query->withCount($countV);
+                }
+            }
+        }
     }
     /**
      * 在嵌套模型筛选数据
@@ -149,8 +183,8 @@ trait FilterAndSorting
             $pattern = "/^(\d{2}).(\d{2}).(\d{4})$/";
             if (isset($value['operation']) && in_array(strtolower($value['operation']), $allow_operations) && isset($value['value'])) {
                 if (strtolower($value['operation']) == 'in' && is_array($value['value'])) {
-                    if (in_array(null,$value['value'])) {
-                        $query->where(function ($q) use ($key,$value) {
+                    if (in_array(null, $value['value'])) {
+                        $query->where(function ($q) use ($key, $value) {
                             return $q->whereIn($key, $value['value'])->orWhereNull($key);
                         });
                     } else {
