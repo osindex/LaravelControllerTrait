@@ -1,4 +1,5 @@
 <?php
+
 namespace Osi\LaravelControllerTrait\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -131,9 +132,29 @@ trait FilterAndSorting
                 // dd($keys_array);
                 $relation = null;
                 $table_name = null;
+                //改造$key_array
+                $relationStr = '';
+                $flag = false;
+                if (count($keys_array) > 2) {
+                    $new_keys_array = [];
+                    $last_field_name = array_pop($keys_array);
+                    for ($i = 0; $i < count($keys_array); $i++) {
+                        $relationStr .= $keys_array[$i] . '.';
+                    }
+                    $new_keys_array[0] = trim($relationStr, '.');
+                    $new_keys_array[1] = $last_field_name;
+                    // dd($new_keys_array);
+                    $keys_array = $new_keys_array;
+                    $flag = true;
+                }
+                //改造完毕
                 if (count($keys_array) == 2 && in_array($keys_array[0], $this->extraFields())) {
                     $relation = $keys_array[0];
-                    $table_name = $this->detectTableNameFromRelation($relation);
+                    if(!$flag)
+                    {
+                        $table_name = $this->detectTableNameFromRelation($relation);
+                 
+                    }
                     $field_name = $keys_array[1];
                 } else {
                     $field_name = $keys_array[0];
@@ -283,7 +304,7 @@ trait FilterAndSorting
                 $sort_direction = 'asc';
             }
             $available_fields = array_keys(DB::getDoctrineSchemaManager()
-                    ->listTableColumns($query->getModel()->getTable()));
+                ->listTableColumns($query->getModel()->getTable()));
             $sort_arguments = explode('.', $sort);
             $arg_count = count($sort_arguments);
             if ($arg_count == 2) {
