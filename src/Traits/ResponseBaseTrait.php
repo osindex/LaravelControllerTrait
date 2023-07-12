@@ -20,7 +20,7 @@ trait ResponseBaseTrait
      */
     protected function created($content = '')
     {
-        return new Response($content, Response::HTTP_CREATED);
+        return new Response($content, config("trait.api.restful", true) ? Response::HTTP_CREATED : Response::HTTP_OK);
     }
 
     /**
@@ -31,7 +31,7 @@ trait ResponseBaseTrait
      */
     protected function accepted($content = '')
     {
-        return new Response($content, Response::HTTP_ACCEPTED);
+        return new Response($content, config("trait.api.restful", true) ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
     }
 
     /**
@@ -42,7 +42,7 @@ trait ResponseBaseTrait
      */
     protected function noContent()
     {
-        return new Response('', Response::HTTP_NO_CONTENT);
+        return new Response('', config("trait.api.restful", true) ? Response::HTTP_NO_CONTENT : Response::HTTP_OK);
     }
 
     /**
