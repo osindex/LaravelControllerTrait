@@ -7,5 +7,15 @@ use Osi\LaravelControllerTrait\Models\FilterAndSorting;
 class DummyClass extends Model
 {
 	use FilterAndSorting;
-    //
+
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+
+    protected $guarded = [];
+
+    protected $casts = [
+        
+    ];
 }

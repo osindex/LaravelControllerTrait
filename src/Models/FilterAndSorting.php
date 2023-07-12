@@ -22,7 +22,8 @@ trait FilterAndSorting
      */
     public static function bootFilterAndSorting()
     {
-        DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+        if (intval(app()->version()) < 10)
+            DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
     }
     // /**
     //  * 获得当前表名
@@ -150,10 +151,8 @@ trait FilterAndSorting
                 //改造完毕
                 if (count($keys_array) == 2 && in_array($keys_array[0], $this->extraFields())) {
                     $relation = $keys_array[0];
-                    if(!$flag)
-                    {
+                    if (!$flag) {
                         $table_name = $this->detectTableNameFromRelation($relation);
-                 
                     }
                     $field_name = $keys_array[1];
                 } else {
